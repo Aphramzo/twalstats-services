@@ -1,3 +1,5 @@
+![Tests](https://github.com/Aphramzo/twalstats-services/workflows/Tests/badge.svg)
+
 # Services for twalstats
 
 ## Usage
