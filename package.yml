@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda functions and api endpoints for twalstats
+Resources:
+  GetReadings:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetReadings
+      CodeUri: s3://twalstats-package/77d36f3d0bad345ab249a1dd6e2cc1d4
+      Handler: index.handler
+      MemorySize: 128
+      Timeout: 300
+      Runtime: nodejs12.x

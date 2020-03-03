@@ -1,0 +1,21 @@
+{
+  "name": "twalstats",
+  "version": "0.0.1",
+  "description": "endpoints for twalstats",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test jest",
+    "prepackage": "rm -rf dist && cp -r src/ dist",
+    "package": "sam package --template-file template.yml --output-template-file package.yml",
+    "deploy": "sam deploy --template-file package.yml --capabilities CAPABILITY_IAM"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.1",
+    "jest": "^25.1.0"
+  }
+}
