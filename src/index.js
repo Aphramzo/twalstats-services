@@ -1,6 +1,9 @@
-const getReadings = async (event) => {
-  console.log('Event', event);
-  return 'Hi';
+const { getAllStats } = require('./managers/dynamoManager');
+
+const getReadings = async () => {
+  const stats = await getAllStats();
+
+  return stats;
 };
 
 module.exports = {

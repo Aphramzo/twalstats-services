@@ -6,7 +6,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: GetReadings
-      CodeUri: s3://twalstats-package/77d36f3d0bad345ab249a1dd6e2cc1d4
+      CodeUri: s3://twalstats-package/99c04e3e433ff25d1caaca7fa225e64e
       Handler: index.handler
       MemorySize: 128
       Timeout: 300
