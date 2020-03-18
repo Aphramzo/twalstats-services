@@ -2,12 +2,78 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Lambda functions and api endpoints for twalstats
 Resources:
+  TwalStatsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: '''GET,OPTIONS,PATCH,POST'''
+        AllowHeaders: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,auth'''
+        AllowOrigin: '''*'''
+      DefinitionBody:
+        swagger: 2.0
+        info:
+          title:
+            Ref: AWS::StackName
+          description: Twal Stats Service
+        schemes:
+        - https
+        consumes:
+        - application/json
+        produces:
+        - application/json
+        paths:
+          /all:
+            get:
+              tags:
+              - get
+              summary: All Data
+              description: Returns all data
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetReadings.Arn}/invocations
+              responses:
+                '400':
+                  description: Bad request
+                '401':
+                  description: Unauthorized
+                '403':
+                  description: Forbidden
+                '200':
+                  description: Successful Operation
+  ApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Sid: AllowLambdaServiceToAssumeRole
+          Effect: Allow
+          Action:
+          - sts:AssumeRole
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+            - apigateway.amazonaws.com
   GetReadings:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: GetReadings
-      CodeUri: s3://twalstats-package/99c04e3e433ff25d1caaca7fa225e64e
+      CodeUri: s3://twalstats-package/0988f7a513833fef4c89998b83437178
       Handler: index.handler
       MemorySize: 128
       Timeout: 300
       Runtime: nodejs12.x
+      Role:
+        Fn::GetAtt:
+        - ApiRole
+        - Arn
